@@ -1,3 +1,29 @@
+/*-------------------------------------------------------
+Author:     John Wang
+E-mail:     john29917958@gmail.com
+Purpose:    An example solution of the group competition 1
+            problem A examination question.
+University: National Central University
+Lab:        Object-Oriented Lab
+Advisor:    Yung-Pin, Cheng assistant professor
+Date:       2016-03-30
+Grammar:
+- Non-terminals
+    EXPR -> SIG VAL TERM $
+    TERM -> op SIG VAL TERM
+          | £f
+    VAL -> num
+          | lparenthesis EXPR rparenthesis
+    SIG -> sign
+          | £f
+
+- Terminals
+    lparenthesis  (
+    rparenthesis  )
+    op            [-+*\/]
+    num           (0|[1-9]\d*)(\.\d+)?
+    sign          [+-]
+-------------------------------------------------------*/
 #include <iostream>
 #include <string>
 #include <vector>
@@ -19,23 +45,32 @@ regex op("^[-+*\/]");
 regex num("^[+-]?(0|[1-9]\\d*)(\\.\\d+)?");
 regex sign("^[+-]");
 
+// Stores all parsed token types and the value of tokens.
 vector<string> results;
 
+// Entry of program.
 int main()
 {
+    // Holds each line of inputs entered by user.
     vector<string> input_lines;
+
+    // Holds current line of inputs for input iteration.
     string current_line = "";
 
+    // Try to retrieve everything that user inputs.
     while (getline(cin, current_line))
     {
         if (current_line.empty())
         {
-            break;
+            break; // The input stream is ended.
         }
+
+        // Filters out unnecessary spaces.
         current_line.erase(remove(current_line.begin(), current_line.end(), ' '), current_line.end());
         input_lines.push_back(current_line);
     }
 
+    // Parses each line of inputs.
     for (int i = 0; i < input_lines.size(); i++)
     {
         current_line = input_lines[i];
@@ -55,6 +90,9 @@ int main()
     return 0;
 }
 
+/**
+ * Displays all parsed tokens.
+ */
 void show_results()
 {
     for (int i = 0; i < results.size(); i++)
@@ -63,12 +101,22 @@ void show_results()
     }
 }
 
+/**
+ * Shows that the input stream is invalid. Called when there's an
+ * parsing error occurred.
+ */
 void error_input_stream()
 {
     cout << "invalid input";
     exit(0);
 }
 
+/**
+ * Parses and derives the non-terminal EXPR rule. This function will consume
+ * all matched tokens and return a pending string for further operation.
+ * @param const string string_stream The input stream to be parsed.
+ * @returns string Returns the pending string to be parsed.
+ */
 string EXPR(const string string_stream)
 {
     string pending_string;
@@ -80,6 +128,12 @@ string EXPR(const string string_stream)
     return pending_string;
 }
 
+/**
+* Parses and derives the non-terminal TERM rule. This function will consume
+* all matched tokens and return a pending string for further operation.
+* @param const string string_stream The input stream to be parsed.
+* @returns string Returns the pending string to be parsed.
+*/
 string TERM(const string string_stream)
 {
     string pending_string_stream = string_stream;
@@ -108,6 +162,12 @@ string TERM(const string string_stream)
     return "";
 }
 
+/**
+* Parses and derives the non-terminal VAL rule. This function will consume
+* all matched tokens and return a pending string for further operation.
+* @param const string string_stream The input stream to be parsed.
+* @returns string Returns the pending string to be parsed.
+*/
 string VAL(const string string_stream)
 {
     string pending_string_stream = string_stream;
@@ -140,6 +200,12 @@ string VAL(const string string_stream)
     return "";
 }
 
+/**
+* Parses and derives the non-terminal SIG rule. This function will consume
+* all matched tokens and return a pending string for further operation.
+* @param const string string_stream The input stream to be parsed.
+* @returns string Returns the pending string to be parsed.
+*/
 string SIG(const string string_stream)
 {
     string pending_string_stream = string_stream;
