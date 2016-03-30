@@ -34,19 +34,23 @@ int main()
             break;
         }
 
-        results.clear();
+        input_lines.push_back(current_line);
+    }
+
+    for (int i = 0; i < input_lines.size(); i++)
+    {
+        current_line = input_lines[i];
 
         EXPR(current_line);
+    }
 
-        if (!results.empty())
-        {
-            show_results();
-        }
-        else
-        {
-            cout << "invalid input";
-            break;
-        }
+    if (!results.empty())
+    {
+        show_results();
+    }
+    else
+    {
+        cout << "invalid input";
     }
 
     return 0;
