@@ -2,10 +2,12 @@
 Author:     John Wang
 E-mail:     john29917958@gmail.com
 Purpose:    An example solution of the group competition 1
-            problem A examination question.
+            problem A examination question of NCU compiler
+            course.
 University: National Central University
 Lab:        Object-Oriented Lab
-Advisor:    Yung-Pin, Cheng assistant professor
+Course:     Compiler
+Teacher:    Yung-Pin, Cheng assistant professor
 Date:       2016-03-30
 Grammar:
 - Non-terminals
@@ -16,7 +18,6 @@ Grammar:
           | lparenthesis EXPR rparenthesis
     SIG -> sign
           | £f
-
 - Terminals
     lparenthesis  (
     rparenthesis  )
