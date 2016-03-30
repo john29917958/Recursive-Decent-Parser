@@ -13,11 +13,12 @@ string SIG(const string);
 regex lparenthesis("^\\(");
 regex rparenthesis("^\\)");
 regex op("^[-+*\/]");
-regex num("^[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?");
+regex num("^[+-]?(0|[1-9]\\d*)(\\.\\d+)?");
 regex sign("^[+-]");
 
 int main()
 {
+    
     vector<string> input_lines;
     string current_line = "";
 
@@ -31,7 +32,7 @@ int main()
         EXPR(current_line);
 
         cout << "Passed" << endl;
-    }
+    }    
 
     return 0;
 }
@@ -39,7 +40,6 @@ int main()
 void error_input_stream()
 {
     cout << "invalid input";
-    system("pause");
     exit(0);
 }
 
@@ -68,7 +68,8 @@ string TERM(const string string_stream)
         return pending_string_stream;
     }
 
-    if (string_stream.empty())
+    if (string_stream.empty() ||
+        regex_search(string_stream, rparenthesis))
     {
         // do nothing.
         return string_stream;
