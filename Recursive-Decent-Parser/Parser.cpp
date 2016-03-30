@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -23,7 +24,6 @@ vector<string> results;
 
 int main()
 {
-    
     vector<string> input_lines;
     string current_line = "";
 
@@ -33,7 +33,7 @@ int main()
         {
             break;
         }
-
+        current_line.erase(remove(current_line.begin(), current_line.end(), ' '), current_line.end());
         input_lines.push_back(current_line);
     }
 
@@ -52,7 +52,7 @@ int main()
     {
         cout << "invalid input";
     }
-
+    
     return 0;
 }
 
