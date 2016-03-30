@@ -10,11 +10,11 @@ string TERM(const string);
 string VAL(const string);
 string SIG(const string);
 
-regex lparenthesis("\\(");
-regex rparenthesis("\\)");
-regex op("[-+*\/]");
-regex num("[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?");
-regex sign("[+-]");
+regex lparenthesis("^\\(");
+regex rparenthesis("^\\)");
+regex op("^[-+*\/]");
+regex num("^[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?");
+regex sign("^[+-]");
 
 int main()
 {
@@ -59,7 +59,7 @@ string TERM(const string string_stream)
     string pending_string_stream = string_stream;
     string peek = pending_string_stream.substr(0, 1);
     
-    if (regex_match(peek, op))
+    if (regex_search(peek, op))
     {
         pending_string_stream = regex_replace(pending_string_stream, op, "");
         pending_string_stream = VAL(pending_string_stream);
@@ -82,17 +82,17 @@ string VAL(const string string_stream)
 {
     string pending_string_stream = string_stream;
 
-    if (regex_match(pending_string_stream, num))
+    if (regex_search(pending_string_stream, num))
     {
         return regex_replace(pending_string_stream, num, "");
     }
 
-    if (regex_match(pending_string_stream, lparenthesis))
+    if (regex_search(pending_string_stream, lparenthesis))
     {
         pending_string_stream = regex_replace(pending_string_stream, lparenthesis, "");
         pending_string_stream = EXPR(pending_string_stream);
         
-        if (regex_match(pending_string_stream, rparenthesis))
+        if (regex_search(pending_string_stream, rparenthesis))
         {
             pending_string_stream = regex_replace(pending_string_stream, rparenthesis, "");
             return pending_string_stream;
@@ -111,13 +111,13 @@ string SIG(const string string_stream)
     string pending_string_stream = string_stream;
     string peek = pending_string_stream.substr(0, 1);
 
-    if (regex_match(pending_string_stream, sign))
+    if (regex_search(pending_string_stream, sign))
     {
         return regex_replace(pending_string_stream, sign, "");
     }
 
-    if (regex_match(pending_string_stream, lparenthesis) ||
-        regex_match(pending_string_stream, num))
+    if (regex_search(pending_string_stream, lparenthesis) ||
+        regex_search(pending_string_stream, num))
     {
         // do nothing.
         return pending_string_stream;
