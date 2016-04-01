@@ -1,7 +1,11 @@
 #include "Parser.h"
 
+/**
+ * Constructor. Initializes all members.
+ */
 Parser::Parser()
 {
+    _is_valid = true;
     _lparenthesis = new std::regex("^\\(");
     _rparenthesis = new std::regex("^\\)");
     _op = new std::regex("^[-+*\/]");
@@ -9,9 +13,52 @@ Parser::Parser()
     _sign = new std::regex("^[+-]");
 }
 
+/**
+ * Destructor. Clears out all dynamic allocated
+ * memory usage held by this parser.
+ */
+Parser::~Parser()
+{
+    delete _lparenthesis;
+    delete _rparenthesis;
+    delete _op;
+    delete _num;
+    delete _sign;
+}
+
+/**
+ * Parses the input string stream.
+ */
 void Parser::parse(const std::string string_stream)
 {
     _EXPR(string_stream);
+}
+
+/**
+ * Shows all parsed tokens to user.
+ */
+void Parser::show_results()
+{
+    if (_is_valid)
+    {
+        for (int i = 0; i < _results.size(); i++)
+        {
+            std::cout << _results[i] << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "invalid input" << std::endl;
+    }
+}
+
+/**
+ * Resets this parser to the initial state.
+ */
+void Parser::reset()
+{
+    _is_valid = true;
+    _results.empty();
 }
 
 /**
@@ -20,19 +67,7 @@ void Parser::parse(const std::string string_stream)
 */
 void Parser::_error_input_stream()
 {
-    std::cout << "invalid input";
-    exit(0);
-}
-
-/**
- * Shows all parsed tokens to user.
- */
-void Parser::show_results()
-{
-    for (int i = 0; i < _results.size(); i++)
-    {
-        std::cout << _results[i] << std::endl;
-    }
+    _is_valid = false;
 }
 
 /**
@@ -43,6 +78,8 @@ void Parser::show_results()
  */
 std::string Parser::_EXPR(const std::string string_stream)
 {
+    if (!_is_valid) return "";
+
     std::string pending_string;
 
     pending_string = _SIG(string_stream);
@@ -60,6 +97,8 @@ std::string Parser::_EXPR(const std::string string_stream)
  */
 std::string Parser::_TERM(const std::string string_stream)
 {
+    if (!_is_valid) return "";
+
     std::string pending_string_stream = string_stream;
     std::string peek = pending_string_stream.substr(0, 1);
     std::smatch match;
@@ -94,6 +133,8 @@ std::string Parser::_TERM(const std::string string_stream)
  */
 std::string Parser::_VAL(const std::string string_stream)
 {
+    if (!_is_valid) return "";
+
     std::string pending_string_stream = string_stream;
     std::smatch match;
 
@@ -132,6 +173,8 @@ std::string Parser::_VAL(const std::string string_stream)
  */
 std::string Parser::_SIG(const std::string string_stream)
 {
+    if (!_is_valid) return "";
+
     std::string pending_string_stream = string_stream;
     std::string peek = pending_string_stream.substr(0, 1);
     std::smatch match;

@@ -61,10 +61,10 @@ int main()
     for (int i = 0; i < input_lines.size(); i++)
     {
         current_line = input_lines[i];
-
         parser.parse(current_line);
-        parser.show_results();
     }
-    
+
+    parser.show_results();
+
     return 0;
 }
